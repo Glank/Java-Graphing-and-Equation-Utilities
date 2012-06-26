@@ -2,17 +2,12 @@ package ksydfius.equation;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Equation {
 	public static void main(String[] args){
-		System.out.println(Math.PI);
-		String a = "(25/24)-(8/19)*x^1+(17/11)*x^2+(9/10)*x^3+(6/12)*x^4+(6/26)*x^5-(1/30)*x^6";
+		String a = "and(7,5)";
 		Equation equ = new Equation(a);
-		System.out.println(equ);
-		equ.set("x", 1.0);
-		System.out.println(equ);
 		System.out.println(equ.getValue());
 	}
 	private Node rootnode;
@@ -67,6 +62,8 @@ public class Equation {
 		ret = getNextDiv(equ);
 		if (ret != null) return ret;
 		ret = getNextExp(equ);
+		if (ret != null) return ret;
+		ret = getNextMod(equ);
 		if (ret != null) return ret;
 		
 		if (equ.startsWith("(") && equ.endsWith(")"))
@@ -147,19 +144,35 @@ public class Equation {
 		return new Exponent(n1, n2);
 	}
 	
+	private Modulus getNextMod(String equ){
+		int a = indOfOutP('%', equ);
+		if (a == -1)
+			return null;
+		String left = equ.substring(0, a);
+		String right = equ.substring(a + 1);
+		Node n1 = getNode(left);
+		Node n2 = getNode(right);
+		return new Modulus(n1, n2);
+	}
+	
 	private Function getNextPrefixFunction(String equ){
 		int a = equ.indexOf("(");
 		String prefix = equ.substring(0, a);
-		String inParan = equ.substring(a+1, equ.length() - 1);
+		equ = equ.substring(a+1, equ.length() - 1);
 		
-		Scanner sc = new Scanner(inParan);
-		sc.useDelimiter(",");
+		Vector<String> parts = new Vector<String>();
+		int j = indOfOutP(',',equ);
+		while(j!=-1){
+			parts.add(equ.substring(0,j));
+			equ = equ.substring(j+1);
+			j = indOfOutP(',',equ);
+		}
+		parts.add(equ);
 		
 		Vector<Node> ofNodes = new Vector<Node>();
 		
-		while (sc.hasNext()){
-			ofNodes.add(getNode(sc.next()));
-		}
+		for (String s:parts)
+			ofNodes.add(getNode(s));
 		
 		Node nodes[] = new Node[ofNodes.size()];
 		
@@ -170,6 +183,39 @@ public class Equation {
 			return new Sine(nodes[0]);
 		if (prefix.equals("cos"))
 			return new Cosine(nodes[0]);
+		if (prefix.equals("tan"))
+			return new Tangent(nodes[0]);
+		if (prefix.equals("csc"))
+			return new Cosecant(nodes[0]);
+		if (prefix.equals("cot"))
+			return new Cotangent(nodes[0]);
+		if (prefix.equals("sec"))
+			return new Secant(nodes[0]);
+		if (prefix.equals("acos"))
+			return new ArcCos(nodes[0]);
+		if (prefix.equals("asin"))
+			return new ArcSin(nodes[0]);
+		if (prefix.equals("atan"))
+			return new ArcTan(nodes[0]);
+		if (prefix.equals("asec"))
+			return new ArcSec(nodes[0]);
+		if (prefix.equals("acsc"))
+			return new ArcCsc(nodes[0]);
+		if (prefix.equals("acot"))
+			return new ArcCot(nodes[0]);
+		if (prefix.equals("log"))
+			return new Log10(nodes[0]);
+		if (prefix.equals("ln"))
+			return new Ln(nodes[0]);
+		if (prefix.equals("xor"))
+			return new XOR(nodes[0], nodes[1]);
+		if (prefix.equals("and"))
+			return new AND(nodes[0], nodes[1]);
+		if (prefix.equals("or"))
+			return new OR(nodes[0], nodes[1]);
+		if (prefix.equals("not"))
+			return new NOT(nodes[0]);
+		
 		return new Function(prefix, nodes);
 		
 	}

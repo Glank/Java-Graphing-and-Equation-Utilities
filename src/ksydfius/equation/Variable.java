@@ -18,11 +18,13 @@ public class Variable extends Node{
 
 	@Override
 	public Double getValue() {
-		if (value != null) return value;
-		
-		if (toString().equals("pi"))
+		if (value != null) 
+			return value;
+		if (getName().equals("rand"))
+			return Math.random();
+		if (getName().equals("pi"))
 			return Math.PI;
-		if (toString().equals("e"))
+		if (getName().equals("e"))
 			return Math.E;
 		return null;
 	}
