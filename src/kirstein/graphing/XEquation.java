@@ -14,11 +14,16 @@ public class XEquation implements DrawableEquation{
 	public XEquation(String equation){
 		equ = new Equation(equation);
 		Vector<Variable> variables = equ.getVariables();
-		if(variables.size()!=1)
-			throw new EquationException("Invalid X Equation: " + equation);
-		x = variables.firstElement();
-		if(!x.getName().equals("x"))
-			throw new EquationException("Invalid X Equation: " + equation);
+		if(variables.size()==0){
+			x = new Variable("x");
+		}
+		else{
+			if(variables.size()!=1)
+				throw new EquationException("Invalid X Equation: " + equation);
+			x = variables.firstElement();
+			if(!x.getName().equals("x"))
+				throw new EquationException("Invalid X Equation: " + equation);
+		}
 	}
 
 	@Override

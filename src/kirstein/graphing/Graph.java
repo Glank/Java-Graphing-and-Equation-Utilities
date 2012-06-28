@@ -2,9 +2,11 @@ package kirstein.graphing;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
 
-public class Graph {
+public class Graph{
 	private GraphDimensions dimensions;
 	private Vector<DrawableEquation> equations;
 	private GraphSettings settings;
@@ -13,7 +15,50 @@ public class Graph {
 		dimensions = new GraphDimensions();
 		settings = new GraphSettings();
 		equations = new Vector<DrawableEquation>();
+		
 	}
+
+	public void zoomOut( double scaleFactor ){
+		double height = dimensions.getYMax() - dimensions.getYMin();
+		double width = dimensions.getXMax() - dimensions.getXMin();
+		double centerx, centery;
+		
+		centerx = width/2 + dimensions.getXMin();
+		centery = height/2 + dimensions.getYMin();
+		height *= scaleFactor;
+		width *= scaleFactor;
+		
+		dimensions.setXMin(centerx - width/2);
+		dimensions.setXMax(centerx + width/2);
+		dimensions.setYMin(centery - height/2);
+		dimensions.setYMax(centery + height/2);
+		
+		settings.xTickDistance *= scaleFactor;
+		settings.yTickDistance *= scaleFactor;
+		
+	}
+	
+	public void zoomIn( double scaleFactor ){
+		double height = dimensions.getYMax() - dimensions.getYMin();
+		double width = dimensions.getXMax() - dimensions.getXMin();
+		double centerx, centery;
+		
+		centerx = width/2 + dimensions.getXMin();
+		centery = height/2 + dimensions.getYMin();
+		height /= scaleFactor;
+		width /= scaleFactor;
+		
+		dimensions.setXMin(centerx - width/2);
+		dimensions.setXMax(centerx + width/2);
+		dimensions.setYMin(centery - height/2);
+		dimensions.setYMax(centery + height/2);
+		
+		settings.xTickDistance /= scaleFactor;
+		settings.yTickDistance /= scaleFactor;
+		
+		
+	}
+	
 	public GraphDimensions getDimensions() {
 		return dimensions;
 	}
@@ -114,5 +159,45 @@ public class Graph {
 				drawLine(last, p, g);
 			last = p;
 		}
+	}
+
+	public void MoveUp( double percentage ){
+		double height = dimensions.getYMax() - dimensions.getYMin();
+		dimensions.setYMin(dimensions.getYMin()+percentage*height);
+		dimensions.setYMax(dimensions.getYMax()+percentage*height);
+	}
+	
+	public void MoveDown( double percentage ){
+		double height = dimensions.getYMax() - dimensions.getYMin();
+		dimensions.setYMin(dimensions.getYMin()-percentage*height);
+		dimensions.setYMax(dimensions.getYMax()-percentage*height);
+	}
+	
+	public void MoveLeft( double percentage ){
+		double width = dimensions.getXMax() - dimensions.getXMin();
+		dimensions.setXMin(dimensions.getXMin()-percentage*width);
+		dimensions.setXMax(dimensions.getXMax()-percentage*width);
+	}
+	
+	public void MoveRight( double percentage ){
+		double width = dimensions.getXMax() - dimensions.getXMin();
+		dimensions.setXMin(dimensions.getXMin()+percentage*width);
+		dimensions.setXMax(dimensions.getXMax()+percentage*width);
+	}
+	public void center(){
+		double height = dimensions.getYMax() - dimensions.getYMin();
+		double width = dimensions.getXMax() - dimensions.getXMin();
+		dimensions.setXMax(width/2);
+		dimensions.setXMin(-width/2);
+		dimensions.setYMax(height/2);
+		dimensions.setYMin(-height/2);
+	}
+	
+	public void translate(double dx, double dy){
+		dimensions.setXMin(dimensions.getXMin()+dx);
+		dimensions.setXMax(dimensions.getXMax()+dx);
+		dimensions.setYMin(dimensions.getYMin()+dy);
+		dimensions.setYMax(dimensions.getYMax()+dy);
+		
 	}
 }

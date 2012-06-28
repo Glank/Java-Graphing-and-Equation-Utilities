@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class Equation {
 	public static void main(String[] args){
-		String a = "and(7,5)";
+		String a = "sin(7)*8%3+100/5";
 		Equation equ = new Equation(a);
 		System.out.println(equ.getValue());
 	}
@@ -102,10 +102,10 @@ public class Equation {
 		int a = indOfOutP('-', equ);
 		if (a == -1)
 			return null;
-		if (a == 0)
-			return null;
 		String left = equ.substring(0, a);
 		String right = equ.substring(a + 1);
+		if (a == 0)
+			left = "0";
 		Node n1 = getNode(left);
 		Node n2 = getNode(right);
 		return new Subtract(n1, n2);
