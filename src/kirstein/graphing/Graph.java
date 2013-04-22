@@ -99,8 +99,17 @@ public class Graph{
 		drawLine(p1,p2,g);
 	}
 	
+	public void drawString(String str, GraphPoint gp, Graphics g){
+		Point p = dimensions.getPoint(gp);
+		drawString(str,p,g);
+	}
+	
 	public void drawLine(Point p1, Point p2, Graphics g){
 		g.drawLine(p1.x, p1.y, p2.x, p2.y);
+	}
+	
+	public void drawString(String str, Point p, Graphics g){
+		g.drawString(str, p.x, p.y);
 	}
 	
 	public void drawXAxis(Graphics g){
