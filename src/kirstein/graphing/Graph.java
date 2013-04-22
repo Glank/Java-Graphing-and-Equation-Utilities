@@ -124,11 +124,13 @@ public class Graph{
 			gp1.x = x;
 			gp2.x = x;
 			drawLine(gp1,gp2,g);
+			drawString(x+"", gp1, g);
 		}
 		for(double x = 0; x <= dimensions.getXMax(); x+=settings.xTickDistance){
 			gp1.x = x;
 			gp2.x = x;
 			drawLine(gp1,gp2,g);
+			drawString(x+"", gp1, g);
 		}
 	}
 	
@@ -141,11 +143,13 @@ public class Graph{
 			gp1.y = y;
 			gp2.y = y;
 			drawLine(gp1,gp2,g);
+			drawString(y+"", gp1, g);
 		}
 		for(double y = 0; y <= dimensions.getYMax(); y+=settings.yTickDistance){
 			gp1.y = y;
 			gp2.y = y;
 			drawLine(gp1,gp2,g);
+			drawString(y+"", gp1, g);
 		}
 	}
 	

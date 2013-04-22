@@ -12,7 +12,7 @@ import kirstein.graphing.XEquation;
 public class GraphDisplayTest {
 	public static void main(String[] args){
 		Graph g = new Graph();
-		XEquation equation = new XEquation("-xor(or(and((x^2),(x+7)/2),x),(x^1.5))");
+		XEquation equation = new XEquation("sin(x)");
 		g.addEquation(equation);
 		/*
 		ParametricEquation equation2 = new ParametricEquation("t^2", "t*2", 0, 2*Math.PI, 0.01);
