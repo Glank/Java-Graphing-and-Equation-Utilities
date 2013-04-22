@@ -5,16 +5,20 @@ import java.awt.Point;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
+import java.text.*;
 
 public class Graph{
 	private GraphDimensions dimensions;
 	private Vector<DrawableEquation> equations;
+	private Vector<GraphPoint> points;
 	private GraphSettings settings;
+	private DecimalFormat df = new DecimalFormat("#.##");
 	
 	public Graph(){
 		dimensions = new GraphDimensions();
 		settings = new GraphSettings();
 		equations = new Vector<DrawableEquation>();
+		points = new Vector<GraphPoint>();
 		
 	}
 
@@ -74,6 +78,12 @@ public class Graph{
 	public void addEquation(DrawableEquation equation) {
 		equations.add(equation);
 	}
+	public void removePoint(GraphPoint point){
+		points.remove(point);
+	}
+	public void addPoint(GraphPoint point){
+		points.add(point);
+	}
 	public GraphSettings getSettings() {
 		return settings;
 	}
@@ -91,6 +101,8 @@ public class Graph{
 			drawYTicks(g);
 		for(int i = 0; i < equations.size(); i++)
 			drawEquation(equations.get(i),g);
+		for(int i = 0; i < points.size(); i++)
+			drawPoint(points.get(i),g);
 	}
 	
 	public void drawLine(GraphPoint gp1, GraphPoint gp2, Graphics g){
@@ -110,6 +122,15 @@ public class Graph{
 	
 	public void drawString(String str, Point p, Graphics g){
 		g.drawString(str, p.x, p.y);
+	}
+	
+	public void drawPoint(Point p, Graphics g){
+		g.fillOval(p.x-2, p.y-2, 5, 5);
+	}
+	
+	public void drawPoint(GraphPoint gp, Graphics g){
+		Point p = dimensions.getPoint(gp);
+		drawPoint(p,g);
 	}
 	
 	public void drawXAxis(Graphics g){
@@ -133,13 +154,13 @@ public class Graph{
 			gp1.x = x;
 			gp2.x = x;
 			drawLine(gp1,gp2,g);
-			drawString(x+"", gp1, g);
+			drawString(df.format(x), gp1, g);
 		}
 		for(double x = 0; x <= dimensions.getXMax(); x+=settings.xTickDistance){
 			gp1.x = x;
 			gp2.x = x;
 			drawLine(gp1,gp2,g);
-			drawString(x+"", gp1, g);
+			drawString(df.format(x), gp1, g);
 		}
 	}
 	
@@ -152,13 +173,13 @@ public class Graph{
 			gp1.y = y;
 			gp2.y = y;
 			drawLine(gp1,gp2,g);
-			drawString(y+"", gp1, g);
+			drawString(df.format(y), gp1, g);
 		}
 		for(double y = 0; y <= dimensions.getYMax(); y+=settings.yTickDistance){
 			gp1.y = y;
 			gp2.y = y;
 			drawLine(gp1,gp2,g);
-			drawString(y+"", gp1, g);
+			drawString(df.format(y), gp1, g);
 		}
 	}
 	
